@@ -57,7 +57,7 @@ module.exports =
 
       "endTime": "20:59",
 
-      "repetitionScheme": "0 03 01 21,22,23,24,25,26,27 * ?",
+      "repetitionScheme": "0 31 14 21,22,23,24,25,26,27 * ?",
 
       "configuration": [
 
@@ -99,7 +99,7 @@ module.exports =
 
       "endTime": "19:00",
 
-      "repetitionScheme": "0 04 01 * * ?",
+      "repetitionScheme": "0 45 14 * * ?",
 
       "configuration": [
 
