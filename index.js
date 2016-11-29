@@ -34,7 +34,12 @@ server.listen(649);
 app.use('/', express.static('public'));
 
 io.on('connection', function (socket) {
-  
+    
+   //ta pernw ap th vash me date > now && seen_no. 	
+	
+   //
+   
+   
    //db -> .	
    var interval = setInterval(function(){
 
