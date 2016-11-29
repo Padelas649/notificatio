@@ -37,6 +37,25 @@ const App = React.createClass({
 	
   },
   
+  // Handle remove
+  handleRemove(id){
+    console.log(id);
+	const remainingNotifications = this.state.notifications.filter((notification) => {
+      if(notification.id != id) {console.log(notification.id); return notification;}
+    });
+    
+	this.setState({notifications: remainingNotifications});
+	
+	/*
+	// Update state with filter
+    axios.delete(this.apiUrl+'/'+id)
+      .then((res) => {
+        this.setState({data: remainder});
+      })
+	*/
+	
+  },
+
   
   //check if the notification already exists.
   _indexOf(notifications,newNotification) {
@@ -49,7 +68,7 @@ const App = React.createClass({
   render() {
     return (
       <div className="container">
-	  <NotificationPane when={this.state.when} status={this.state.status} data={{notifications: this.state.notifications}} />
+	  <NotificationPane  onChange={this.handleRemove} when={this.state.when} status={this.state.status} data={{notifications: this.state.notifications}} />
 	  </div>
     );
   }

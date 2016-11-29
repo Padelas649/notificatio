@@ -55,7 +55,7 @@ io.on('connection', function (socket) {
         //}
       }
 
-}, 3000);
+}, 5000);
 
   socket.on('my other event', function (data) {
     console.log(data);
