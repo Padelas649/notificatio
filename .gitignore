@@ -2,6 +2,8 @@
 logs
 *.log
 npm-debug.log*
+config.js
+/public/notificatio.js
 
 # Runtime data
 pids

@@ -5,9 +5,26 @@ var io = require('socket.io')(server);
 var parser = require('cron-parser');
 
 var data = require('./api');
+var config = require('./config');
 var notifications = [];
+var jobs = require('./jobs');
 
-//**************** worker ***********************************************
+
+var pgp = require('pg-promise')(/*options*/)
+var db = pgp('postgres://'+config.me.user+':'+config.me.pass+'@'+config.me.host+':'+config.me.port+'/'+config.me.db);
+
+db.one('SELECT $1 AS value', 123)
+  .then(function (data) {
+    console.log('DATA:', data.value)
+  })
+  .catch(function (error) {
+    console.log('ERROR:', error)
+  });
+
+  
+jobs.daily(); 
+
+
 //interval - call api -> db 
 for (var i = 0, len = data.length; i < len; i++) {
   try {
