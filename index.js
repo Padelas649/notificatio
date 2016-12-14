@@ -4,26 +4,21 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var parser = require('cron-parser');
 
+var moment = require('moment');
+
 var data = require('./api');
 var config = require('./config');
 var notifications = [];
 var jobs = require('./jobs');
 
 
-var pgp = require('pg-promise')(/*options*/)
-var db = pgp('postgres://'+config.me.user+':'+config.me.pass+'@'+config.me.host+':'+config.me.port+'/'+config.me.db);
 
-db.one('SELECT $1 AS value', 123)
-  .then(function (data) {
-    console.log('DATA:', data.value)
-  })
-  .catch(function (error) {
-    console.log('ERROR:', error)
-  });
+
 
   
-jobs.daily(); 
-
+//jobs.db1(); 
+//jobs.db2();
+//jobs.db3();
 
 //interval - call api -> db 
 for (var i = 0, len = data.length; i < len; i++) {
@@ -51,32 +46,49 @@ server.listen(649);
 app.use('/', express.static('public'));
 
 io.on('connection', function (socket) {
-    
-   //ta pernw ap th vash me date > now && seen_no. 	
-	
-   //
-   
-   
+  
+  
    //db -> .	
    var interval = setInterval(function(){
+	var pgp = require('pg-promise')();
+	let m1 = moment();
+	var me = pgp('postgres://'+config.me.user+':'+config.me.pass+'@'+config.me.host+':'+config.me.port+'/'+config.me.db);	
+	var thisData ;
+	
+	
+	//ta pernw ap th vash me date > now && seen_no. 	
+   me.many("SELECT * FROM notifications ORDER BY id ASC")	
+	.then(function (data) {	
+		console.log(data)
+		var i = setInterval(function(){
+			for (var i = 0, len = data.length; i < len; i++) {
+				var now = new Date();
+				var currentNotificationDate = new Date(data[i].emitsOn);
+				var diff = Math.abs(currentNotificationDate - now);
+				var diffMinutes = Math.floor((diff/1000)/60);
 
-    for (var i = 0, len = notifications.length; i < len; i++) {
-        var now = new Date();
-        var currentNotificationDate = new Date(notifications[i].emitsOn);
-        var diff = Math.abs(currentNotificationDate - now);
-        var diffMinutes = Math.floor((diff/1000)/60);
+				if (diffMinutes === 0){
+					socket.emit('news', { notification: data[i] });
+					console.log('Notification Send! Id:' + data[i].id);
+				}
+			}
+		
+		}, 5000);
+		socket.emit('checking',{});
+		
+	})
+	.catch(function (error) {
+		console.log('ERROR:', error)
+	});
 
-        //if (diffMinutes === 0){
-          socket.emit('news', { notification: notifications[i] });
-          console.log('Notification Send! Id:' + notifications[i].id);
-        //}
-      }
-
-}, 5000);
-
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
+	console.log('**********************************************');	
+	
+}, 10000); 
+	/*
+	socket.on('checking', function (data) {
+		console.log("Client Connected.");
+	});
+	*/
 });
 
 //**************** server ***********************************************

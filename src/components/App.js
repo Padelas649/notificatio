@@ -35,6 +35,12 @@ const App = React.createClass({
 		self.setState({ status: 'Trying...'});
 	});
 	
+	socket.on('checking', function (data) {
+		self.setState({ when: new Date()});
+		self.setState({ status: 'Connected'});
+	});
+	
+	
   },
   
   // Handle remove
