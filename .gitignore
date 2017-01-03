@@ -1,3 +1,11 @@
 jobs.js
 config.js
 node_modules/
+.DS_Store
+.create.sql.swp
+.swp
+*.log
+*.sql
+*.swp
+npm-debug.log.3442731307
+npm-debug.log.842427891
